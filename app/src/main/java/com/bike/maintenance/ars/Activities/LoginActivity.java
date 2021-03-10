@@ -21,28 +21,37 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends BaseActivity {
     private EditText email, password;
     private FirebaseAuth mAuth;
+    private ProgressDialog mDialog;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
         mAuth = FirebaseAuth.getInstance();
+        mDialog = new ProgressDialog(this);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
 
         findViewById(R.id.login).setOnClickListener(v -> {
             if (getText(email).isEmpty())
                 email.setError("Email Required");
             else if (getText(password).isEmpty())
                 password.setError("Password Required");
-            else
+            else {
+                mDialog.setMessage("Please wait...");
+                mDialog.show();
                 mAuth.signInWithEmailAndPassword(getText(email), getText(password))
                         .addOnCompleteListener(task -> {
+                            if (mDialog.isShowing()) mDialog.dismiss();
                             if (task.isSuccessful()) {
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
                                 Toast.makeText(this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
+            }
         });
 
         findViewById(R.id.dontHaveAccount).setOnClickListener(v -> {
