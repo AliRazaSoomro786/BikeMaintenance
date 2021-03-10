@@ -1,6 +1,7 @@
 package com.bike.maintenance.ars.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bike.maintenance.ars.MainActivity;
 import com.bike.maintenance.ars.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,8 +38,9 @@ public class LoginActivity extends BaseActivity {
                 mAuth.signInWithEmailAndPassword(getText(email), getText(password))
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
+                                Toast.makeText(this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
         });
