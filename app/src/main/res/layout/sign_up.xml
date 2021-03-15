@@ -69,13 +69,14 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
+                android:id="@+id/radioGroup"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/mechanicRadioButton"
+                    android:id="@+id/mechanic"
                     android:buttonTint="@color/black"
                     android:textColor="@color/black"
                     android:text="Mechanic" />
@@ -91,7 +92,7 @@
             </RadioGroup>
 
             <Button
-                android:id="@+id/login"
+                android:id="@+id/signUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

@@ -1,11 +1,7 @@
 package com.bike.maintenance.ars.Activities;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,15 +9,15 @@ import androidx.annotation.Nullable;
 
 import com.bike.maintenance.ars.MainActivity;
 import com.bike.maintenance.ars.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.bike.maintenance.ars.Utils.AppConstant;
+import com.bike.maintenance.ars.Utils.DialogUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends BaseActivity {
     private EditText email, password;
-    private FirebaseAuth mAuth;
-    private ProgressDialog mDialog;
+    private DialogUtils mDialog;
 
 
     @Override
@@ -29,8 +25,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDialog = new ProgressDialog(this);
+        mDialog = new DialogUtils(this);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
 
@@ -40,22 +35,41 @@ public class LoginActivity extends BaseActivity {
             else if (getText(password).isEmpty())
                 password.setError("Password Required");
             else {
-                mDialog.setMessage("Please wait...");
-                mDialog.show();
-                mAuth.signInWithEmailAndPassword(getText(email), getText(password))
+                mDialog.show("Please wait ... ");
+                getAuth().signInWithEmailAndPassword(getText(email), getText(password))
                         .addOnCompleteListener(task -> {
                             if (mDialog.isShowing()) mDialog.dismiss();
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                validateUser(task.getResult().getUser().getUid());
                             } else {
-                                Toast.makeText(this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                error(v, task.getException().getMessage());
                             }
                         });
             }
         });
 
         findViewById(R.id.dontHaveAccount).setOnClickListener(v -> {
-            // DON'T HAVE ACCOUNT
+            newActivity(SignUpActivity.class);
+            finish();
+        });
+    }
+
+    private void validateUser(String uid) {
+        getReference(AppConstant.USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+                String type = snapshot.child(AppConstant.USER_TYPE).getValue().toString();
+                if (type.equals(AppConstant.CUSTOMER))
+                    Toast.makeText(LoginActivity.this, "Login As a customer", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(LoginActivity.this, "Login As a mechanic", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
     }
 }
