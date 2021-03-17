@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BikeMaintenance">
         <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MechanicActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.SplashScreen">
             <intent-filter>

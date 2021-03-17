@@ -51,4 +51,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
+
+    public boolean isNewUser() {
+        return getAuth().getCurrentUser() == null;
+    }
 }
