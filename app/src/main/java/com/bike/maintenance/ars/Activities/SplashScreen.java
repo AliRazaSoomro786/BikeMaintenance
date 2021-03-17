@@ -43,6 +43,8 @@ public class SplashScreen extends BaseActivity {
                     newActivity(LoginActivity.class); // todo customer activity
                 else
                     newActivity(MechanicActivity.class);
+
+                finish();
             }
 
             @Override

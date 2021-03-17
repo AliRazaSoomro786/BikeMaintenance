@@ -33,7 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void error(View view, String message) {
-//        Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
         Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
 
     }
@@ -43,8 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void success(View view, String message) {
-//        Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     public void newActivity(Class<?> activity) {
