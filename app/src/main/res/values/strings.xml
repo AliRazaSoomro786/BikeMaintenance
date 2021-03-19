@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BikeMaintenance</string>
+    <string name="title_activity_customer">Map</string>
 </resources>

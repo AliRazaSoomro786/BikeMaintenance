@@ -7,6 +7,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bike.maintenance.ars.CustomerActivity;
+import com.bike.maintenance.ars.MechanicActivity;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
 import com.bike.maintenance.ars.Utils.DialogUtils;
@@ -60,9 +62,11 @@ public class LoginActivity extends BaseActivity {
                 if (snapshot == null) return;
                 String type = snapshot.child(AppConstant.USER_TYPE).getValue().toString();
                 if (type.equals(AppConstant.CUSTOMER))
-                    Toast.makeText(LoginActivity.this, "Login As a customer", Toast.LENGTH_SHORT).show();
+                    newActivity(CustomerActivity.class);
                 else
-                    Toast.makeText(LoginActivity.this, "Login As a mechanic", Toast.LENGTH_SHORT).show();
+                    newActivity(MechanicActivity.class);
+
+                finish();
             }
 
             @Override
