@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backed"
+    android:orientation="vertical"
+    tools:context=".appoitment_activity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/loogo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APPOINTMENT"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Full Name"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Mobile Number"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/emailaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Enter Email"
+                android:textColorHint="@color/white"
+                android:textSize="20dp"
+                android:inputType="text"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Enter Address"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/selectcompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Select Company"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/powerengine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Power Engine(cc)"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/selectservice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Select Service"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/selcetdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Select Date"
+                android:textColorHint="@color/white"
+                android:textSize="20dp"
+                android:inputType="text"
+                android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/selecttime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                android:hint="Select Time"
+                android:textColorHint="@color/white"
+                android:inputType="text"
+                android:textSize="20dp"
+                android:textColor="@color/white" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/city"
+                    android:text="City"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20dp"
+                    android:textColor="@color/purple_700"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Lahore"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/submit"
+                android:text="submit"
+                android:background="#1B0259"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

@@ -1,4 +1,4 @@
-package com.bike.maintenance.ars.Activities;
+  package com.bike.maintenance.ars.Activities;
 
 import android.os.Bundle;
 import android.widget.EditText;
@@ -42,6 +42,7 @@ public class LoginActivity extends BaseActivity {
                             if (mDialog.isShowing()) mDialog.dismiss();
                             if (task.isSuccessful()) {
                                 validateUser(task.getResult().getUser().getUid());
+
                             } else {
                                 error(v, task.getException().getMessage());
                             }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@drawable/backed">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,31 +18,31 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:src="@drawable/loogo" />
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/white"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hint" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/white"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hint" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
 
             <Button
                 android:id="@+id/login"
@@ -51,7 +51,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/black"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:text="Login" />
 
             <TextView
@@ -60,8 +61,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="Forgot Password ?"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/teal_700" />
 
             <TextView
                 android:id="@+id/dontHaveAccount"
@@ -69,8 +71,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="Don't have account signUp ?"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/teal_700" />
         </LinearLayout>
 
     </ScrollView>

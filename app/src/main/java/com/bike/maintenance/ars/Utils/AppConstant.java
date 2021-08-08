@@ -12,6 +12,7 @@ abstract public class AppConstant {
     public static final String LAT = "lat";
     public static final String LNG = "lng";
     public static final String UID = "uid";
+    public static final String USER_IMAGE="userimage";
     public static final String USER_TYPE = "userType";
 
 }
