@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class onroad_activity extends BaseActivity implements OnMapReadyCallback, Listener {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Listener {
     private GoogleMap mMap;
     private ArrayList<Mechanic> mechanics = new ArrayList<>();
     private ArrayList<Marker> mMechanicsMarkers = new ArrayList<>();

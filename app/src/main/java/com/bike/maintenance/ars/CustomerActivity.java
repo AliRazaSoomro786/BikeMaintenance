@@ -1,60 +1,88 @@
 package com.bike.maintenance.ars;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-
-import android.location.Location;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.bike.maintenance.ars.Activities.BaseActivity;
-import com.bike.maintenance.ars.Activities.SignUpActivity;
-import com.bike.maintenance.ars.Model.Mechanic;
-import com.bike.maintenance.ars.Utils.AppConstant;
-import com.example.easywaylocation.EasyWayLocation;
-import com.example.easywaylocation.Listener;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.bike.maintenance.ars.fragments.HomeFragment;
+import com.bike.maintenance.ars.fragments.OrdersFragment;
+import com.bike.maintenance.ars.fragments.ProfileFragment;
+import com.saharsh.chatapp.Fragments.UsersFragment;
 
-import java.util.ArrayList;
-
-public class CustomerActivity extends BaseActivity  {
-    TextView help;
-    Button appointment,onroad;
-
+public class CustomerActivity extends BaseActivity {
+    private ImageView imgHome, imgOrders, imgChat, imgProfile;
+    private TextView fragmentsLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
-        help= findViewById(R.id.help);
-        appointment= findViewById(R.id.appointment);
-        onroad = findViewById(R.id.onroad);
-        onroad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newActivity(onroad_activity.class);
-                finish();
-            }
+
+        imgHome = findViewById(R.id.actionHome);
+        imgOrders = findViewById(R.id.actionOrders);
+        imgChat = findViewById(R.id.actionChat);
+        imgProfile = findViewById(R.id.actionProfile);
+
+        fragmentsLabel = findViewById(R.id.fragmentsLabel);
+
+
+        imgHome.setOnClickListener(v -> {
+            show(imgHome, new HomeFragment(), "Home");
         });
-        appointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newActivity(appoitment_activity.class);
-                finish();
-            }
+
+        imgOrders.setOnClickListener(v -> {
+            show(imgOrders, new OrdersFragment(), "Orders");
         });
+
+        imgChat.setOnClickListener(v -> {
+            show(imgChat, new UsersFragment(), "Chat");
+        });
+
+        imgProfile.setOnClickListener(v -> {
+            show(imgProfile, new ProfileFragment(), "Profile");
+        });
+
+    }
+
+    private void showFragment(Fragment fragment, String fragTAG) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentByTag(fragment.getClass().getSimpleName());
+
+        if (frag != null) return;
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragTAG)
+                .commit();
+
+        fragmentsLabel.setText(fragment.getTag());
+
+
+    }
+
+
+    private void show(ImageView img, Fragment fragment, String fragTAG) {
+        ImageView[] navigationList = {imgChat, imgHome, imgOrders, imgProfile};
+        for (ImageView imageView : navigationList) {
+            if (img.getTag().equals(imageView.getTag())) {
+                img.setBackgroundResource(R.drawable.rectangle_bg);
+                img.setColorFilter(Color.parseColor("#FFFFFFFF"), PorterDuff.Mode.SRC_IN);
+            } else {
+                imageView.setBackgroundResource(R.drawable.rectangle_bg_transparent);
+                imageView.setColorFilter(Color.parseColor("#81FFFFFF"), PorterDuff.Mode.SRC_IN);
+
+            }
+
+
+        }
+
+        showFragment(fragment, fragTAG);
+
+
     }
 }

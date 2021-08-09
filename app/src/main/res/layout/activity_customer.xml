@@ -1,47 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:background="@drawable/backed"
-    tools:context=".CustomerActivity">
-             <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Welcome For Your Bike Maintenace"
-            android:layout_marginTop="110dp"
-            android:layout_marginLeft="40dp"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-            <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="How we can help you?"
-                android:id="@+id/help"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="30dp"/>
-        <LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/appointment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
-            android:text="For Appointment" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
 
-        <Button
-            android:id="@+id/onroad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="50dp"
-            android:text="On Road"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/main_fragment_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/fragmentsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:textColor="@color/black"
+        android:textSize="@dimen/xxxlarge_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/actionMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintBottom_toTopOf="@+id/top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toEndOf="@+id/fragmentsLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <FrameLayout
+        android:id="@+id/main_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top">
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/container_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom" />
+
+    <ImageView
+        android:id="@+id/actionChat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_baseline_chat_24"
+        android:tag="chat"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/actionHome"
+        app:layout_constraintEnd_toStartOf="@+id/actionOrders"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/actionHome"
+        app:layout_constraintTop_toTopOf="@+id/actionHome"
+        app:tint="#81FFFFFF" />
+
+    <ImageView
+        android:id="@+id/actionHome"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rectangle_bg"
+        android:padding="15dp"
+        android:src="@drawable/ic_baseline_home_24"
+        android:tag="home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/actionChat"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/bottom"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/actionOrders"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_baseline_list_alt_24"
+        android:tag="orders"
+        app:layout_constraintBottom_toBottomOf="@+id/actionChat"
+        app:layout_constraintEnd_toStartOf="@+id/actionProfile"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/actionChat"
+        app:layout_constraintTop_toTopOf="@+id/actionChat"
+        app:tint="#81FFFFFF" />
+
+    <ImageView
+        android:id="@+id/actionProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_person_outline_24"
+        android:tag="profile"
+        app:layout_constraintBottom_toBottomOf="@+id/actionOrders"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/actionOrders"
+        app:layout_constraintTop_toTopOf="@+id/actionOrders"
+        app:tint="#81FFFFFF" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity android:name=".onroad_activity"></activity>
-        <activity android:name=".appoitment_activity" />
+        <activity android:name=".BookingActivity" />
         <activity android:name=".Start_Cuatomer" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

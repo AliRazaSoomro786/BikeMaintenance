@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backed">
+    android:background="@drawable/bike_mechanics">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#612196F3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,10 +19,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
                 android:id="@+id/uploadimage"
-                android:src="@drawable/icon"/>
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:src="@drawable/loogo" />
 
             <EditText
                 android:id="@+id/name"
@@ -68,31 +69,31 @@
                 android:textColorHint="@color/white" />
 
             <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
                 android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <RadioButton
+                    android:id="@+id/mechanic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/mechanic"
                     android:layout_marginLeft="5dp"
-                    android:buttonTint="#FBC02D"
-                    android:textColor="#FBC02D"
-                    android:textSize="20dp"
-                    android:text="Mechanic" />
+                    android:buttonTint="@color/white"
+                    android:text="Mechanic"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
                 <RadioButton
+                    android:id="@+id/customer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/customer"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:buttonTint="#FBC02D"
-                    android:textColor="#FBC02D"
-                    android:text="Customer" />
+                    android:buttonTint="@color/white"
+                    android:text="Customer"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
             </RadioGroup>
 
             <Button
@@ -102,18 +103,20 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="70dp"
                 android:layout_marginRight="10dp"
-                android:textSize="30dp"
+                android:background="@drawable/button_bg"
                 android:text="Sign up"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
             <TextView
                 android:id="@+id/dontHaveAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:textSize="20dp"
                 android:text="Already have account signIn ?"
-                android:textColor="#00796B" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </LinearLayout>
 
     </ScrollView>

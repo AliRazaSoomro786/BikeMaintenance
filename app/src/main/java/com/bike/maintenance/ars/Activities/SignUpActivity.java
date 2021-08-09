@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
@@ -17,17 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
 import com.bike.maintenance.ars.Utils.DialogUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -66,9 +60,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         uploadimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-                {
-                    requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},1234);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1234);
 
                 }
                 selectImage();
@@ -87,26 +80,26 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.signUp) {
-            if(getText(name).isEmpty())
+            if (getText(name).isEmpty())
                 error(v, "Please Enter Name");
-            else if(getText(phone).isEmpty())
+            else if (getText(phone).isEmpty())
                 error(v, "Please Enter Phone Number");
-            else if(getText(email).isEmpty())
-                error(v,"Please Enter Email");
-            else if(getText(password).isEmpty())
-                error(v,"Please Enter Password");
+            else if (getText(email).isEmpty())
+                error(v, "Please Enter Email");
+            else if (getText(password).isEmpty())
+                error(v, "Please Enter Password");
             else if (userType.isEmpty()) {
                 error(v, "Please Select User Type");
             }
           /*  else if(uploadimage.getDrawable()==null){
                 error(v,"Please ADD Image");
             }*/
-                else {
+            else {
                 mDialog.show("Please wait ... ");
                 getAuth().createUserWithEmailAndPassword(getText(email), getText(password))
                         .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                           // uploadimage ();
+                            if (task.isSuccessful()) {
+                                // uploadimage ();
                                 mDialog.updateMessage("Creating user profile ...");
                                 addUserDetails(task.getResult().getUser().getUid());
                             } else {
@@ -134,12 +127,19 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         getReference(AppConstant.USERS).child(uid).setValue(hashMap).addOnCompleteListener(task -> {
             if (task.isSuccessful())
                 if (mDialog.isShowing()) mDialog.dismiss();
+                else
+                    Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             finish();
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull  Exception e) {
+                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
-    public void selectImage()
-    {
+
+    public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -154,8 +154,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode,
-                                    Intent data)
-    {
+                                    Intent data) {
 
         super.onActivityResult(requestCode,
                 resultCode,
@@ -182,16 +181,14 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                                 getContentResolver(),
                                 filePath);
                 uploadimage.setImageBitmap(bitmap);
-            }
-
-            catch (IOException e) {
+            } catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
             }
         }
     }
-    public void uploadimage()
-    {
+
+    public void uploadimage() {
         if (filePath != null) {
 
             // Code for showing progressDialog while uploading
@@ -215,8 +212,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
                                 @Override
                                 public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
+                                        UploadTask.TaskSnapshot taskSnapshot) {
 
                                     // Image uploaded successfully
                                     // Dismiss dialog
@@ -231,8 +227,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
+                        public void onFailure(@NonNull Exception e) {
 
                             // Error, Image not uploaded
                             progressDialog.dismiss();
@@ -250,15 +245,14 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                                 // percentage on the dialog box
                                 @Override
                                 public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
+                                        UploadTask.TaskSnapshot taskSnapshot) {
                                     double progress
                                             = (100.0
                                             * taskSnapshot.getBytesTransferred()
                                             / taskSnapshot.getTotalByteCount());
                                     progressDialog.setMessage(
                                             "Uploaded "
-                                                    + (int)progress + "%");
+                                                    + (int) progress + "%");
                                 }
                             });
         }

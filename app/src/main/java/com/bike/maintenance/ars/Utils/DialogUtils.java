@@ -3,6 +3,8 @@ package com.bike.maintenance.ars.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.bike.maintenance.ars.R;
+
 public class DialogUtils {
     private final ProgressDialog mDialog;
 

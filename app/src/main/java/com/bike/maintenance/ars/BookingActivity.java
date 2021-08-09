@@ -1,7 +1,5 @@
 package com.bike.maintenance.ars;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,8 +7,8 @@ import android.widget.EditText;
 
 import com.bike.maintenance.ars.Activities.BaseActivity;
 
-public class appoitment_activity extends BaseActivity {
-    EditText name,number,emailaddress,address,selectcompany,powerengine,selectservice,selectdate,selecttime;
+public class BookingActivity extends BaseActivity {
+    EditText name, number, emailaddress, address, selectcompany, powerengine, selectservice, selectdate, selecttime;
     Button submit;
 
     @Override
@@ -29,17 +27,16 @@ public class appoitment_activity extends BaseActivity {
         submit = findViewById(R.id.submit);
 
 
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getText(name).isEmpty())
+                if (getText(name).isEmpty())
                     name.setError("Please Enter Name");
-                else if(getText(number).isEmpty())
+                else if (getText(number).isEmpty())
                     number.setError("Please Enter Number");
-                else if(getText(emailaddress).isEmpty())
+                else if (getText(emailaddress).isEmpty())
                     emailaddress.setError("Please Enter EmialAddress");
-                else if(getText(address).isEmpty())
+                else if (getText(address).isEmpty())
                     address.setError("Please Enter Address");
                 else if (getText(selectcompany).isEmpty())
                     selectcompany.setError("Please Enter CompanyName");

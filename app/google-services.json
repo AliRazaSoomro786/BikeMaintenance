@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "930252217871",
-    "project_id": "bikemaintenance-da47e",
-    "storage_bucket": "bikemaintenance-da47e.appspot.com"
+    "project_number": "1000726995219",
+    "project_id": "bike-maintenance-4bcc8",
+    "storage_bucket": "bike-maintenance-4bcc8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:930252217871:android:112236ed49e951edeb0d7a",
+        "mobilesdk_app_id": "1:1000726995219:android:166b98655569cdc4ec3ae6",
         "android_client_info": {
           "package_name": "com.bike.maintenance.ars"
         }
       },
       "oauth_client": [
         {
-          "client_id": "930252217871-1ve461m3tq5p1bku7fbibmtinmpqit6m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.bike.maintenance.ars",
-            "certificate_hash": "48013ad7a5db2cb3d76068454bf3cc784490b360"
-          }
-        },
-        {
-          "client_id": "930252217871-eclohvkj1ujaoeqijsg5785ad342jejh.apps.googleusercontent.com",
+          "client_id": "1000726995219-tfbrmieujhigr1flgkfqlo7g6si9jk1g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCEpoBRy0_A07MCqpzyldwpsQjNciiwP1k"
+          "current_key": "AIzaSyDWWZG1tuFln7nyL0bH1j7hK2PHGnenhlo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "930252217871-eclohvkj1ujaoeqijsg5785ad342jejh.apps.googleusercontent.com",
+              "client_id": "1000726995219-tfbrmieujhigr1flgkfqlo7g6si9jk1g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
