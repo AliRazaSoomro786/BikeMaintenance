@@ -24,6 +24,10 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.bike.maintenance.ars.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +38,6 @@ import com.google.firebase.storage.StorageReference;
 import com.jackandphantom.circularimageview.CircleImage;
 
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 
 import static android.app.Activity.RESULT_OK;
@@ -80,6 +83,32 @@ public class ProfileFragment extends BaseFragment {
 
         getView().findViewById(R.id.actionChangePassword).setOnClickListener(v -> {
             openDialog();
+        });
+
+        loadImageFirebase();
+    }
+
+    private void loadImageFirebase() {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.getValue() == null) return;
+
+                                if (snapshot.hasChild("imageURL"))
+                                    loadGlide(snapshot.child("imageURL").getValue().toString());
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+            }
         });
     }
 
@@ -184,49 +213,35 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void addCityToDb(String url) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("imageURL", url);
 
-//        FirebaseFirestore.getInstance().collection("Accounts").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                QuerySnapshot accountSnapshot = task.getResult();
-//                if (null != accountSnapshot) {
-//                    Optional<Account> account = accountSnapshot.toObjects(Account.class).stream().findFirst();
-//                    if (account.isPresent()) {
-//                        HashMap<String, String> hashMap = new HashMap<>();
-//                        hashMap.put("imageURL", url);
-//                        hashMap.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-//
-//                        FirebaseDatabase.getInstance().
-//                                getReference().
-//                                child("ProfileImages")
-//                                .child(account.get().getId()).
-//                                setValue(hashMap);
-//                    }
-//                }
-//            }
-//        });
+        FirebaseDatabase.getInstance().
+                getReference().
+                child("users").
+                updateChildren(hashMap);
 
     }
 
 
     private void loadGlide(String imageURL) {
-//        Glide.with(this)
-//                .load(imageURL)
-//                .addListener(new RequestListener<Drawable>() {
-//                    @SuppressLint("NewApi")
-//                    @Override
-//                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//
-//                        userProfile.setImageResource(R.drawable.user_profile);
-//                        return false;
-//                    }
-//
-//                    @Override
-//                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
-//
-//                        return false;
-//                    }
-//                })
-//                .into(userProfile);
+        Glide.with(this)
+                .load(imageURL)
+                .addListener(new RequestListener<Drawable>() {
+                    @SuppressLint("NewApi")
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+
+                        return false;
+                    }
+                })
+                .into(userProfile);
     }
 
 

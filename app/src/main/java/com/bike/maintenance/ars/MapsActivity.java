@@ -1,11 +1,13 @@
 package com.bike.maintenance.ars;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.bike.maintenance.ars.Activities.BaseActivity;
 import com.bike.maintenance.ars.Model.Mechanic;
@@ -43,6 +45,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -55,7 +58,21 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //added line
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true); //my code did not have t
         loadMechanics();
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                return false;
+            }
+        });
     }
 
     private void loadMechanics() {
@@ -82,7 +99,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
                                             marker.remove();
 
                                     for (Mechanic mechanic : mechanics) {
-                                        mMechanicsMarkers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(mechanic.getLat(), mechanic.getLng())).title(mechanic.getName())));
+                                        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mechanic.getLat(), mechanic.getLng())).title(mechanic.getName()));
+                                        marker.setTag(mechanic.getUid());
+                                        mMechanicsMarkers.add(marker);
                                     }
                                 }
 
@@ -108,7 +127,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
     @Override
     public void currentLocation(Location location) {
         if (location == null) return;
-        if (mMarker != null) mMarker.remove();
+        if (mMarker != null)
+            mMarker.remove();
+
         mMarker = mMap.addMarker(new MarkerOptions().title("Current location").position(new LatLng(location.getLatitude(), location.getLongitude())));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.f));
 

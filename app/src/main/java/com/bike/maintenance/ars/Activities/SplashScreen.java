@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bike.maintenance.ars.CustomerActivity;
+import com.bike.maintenance.ars.MainActivity;
 import com.bike.maintenance.ars.MechanicActivity;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,6 +26,7 @@ public class SplashScreen extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("test", "firebase add data");

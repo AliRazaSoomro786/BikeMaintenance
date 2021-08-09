@@ -1,11 +1,8 @@
 package com.bike.maintenance.ars;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.bike.maintenance.ars.Activities.BaseActivity;
@@ -14,6 +11,7 @@ import com.example.easywaylocation.EasyWayLocation;
 import com.example.easywaylocation.GetLocationDetail;
 import com.example.easywaylocation.Listener;
 import com.example.easywaylocation.LocationData;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
 
@@ -37,6 +35,8 @@ public class MechanicActivity extends
         currentLocation = findViewById(R.id.currentLocation);
         findViewById(R.id.selectLocation).setOnClickListener(v -> {
         });
+
+        findViewById(R.id.actionSignOut).setOnClickListener(v -> FirebaseAuth.getInstance().signOut());
     }
 
     @Override

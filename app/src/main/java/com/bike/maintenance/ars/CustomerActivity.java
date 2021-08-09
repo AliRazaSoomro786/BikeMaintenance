@@ -1,23 +1,30 @@
 package com.bike.maintenance.ars;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bike.maintenance.ars.Activities.BaseActivity;
+import com.bike.maintenance.ars.Activities.LoginActivity;
+import com.bike.maintenance.ars.Utils.PermissionHelper;
 import com.bike.maintenance.ars.fragments.HomeFragment;
-import com.bike.maintenance.ars.fragments.OrdersFragment;
+import com.bike.maintenance.ars.fragments.OrdersActivity;
 import com.bike.maintenance.ars.fragments.ProfileFragment;
-import com.saharsh.chatapp.Fragments.UsersFragment;
+import com.google.firebase.auth.FirebaseAuth;
+//import com.saharsh.chatapp.Fragments.UsersFragment;
 
 public class CustomerActivity extends BaseActivity {
     private ImageView imgHome, imgOrders, imgChat, imgProfile;
     private TextView fragmentsLabel;
+
+    private PermissionHelper permissionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +38,35 @@ public class CustomerActivity extends BaseActivity {
 
         fragmentsLabel = findViewById(R.id.fragmentsLabel);
 
+        permissionHelper = new PermissionHelper(this);
+
 
         imgHome.setOnClickListener(v -> {
             show(imgHome, new HomeFragment(), "Home");
         });
 
         imgOrders.setOnClickListener(v -> {
-            show(imgOrders, new OrdersFragment(), "Orders");
+            startActivity(new Intent(CustomerActivity.this, OrdersActivity.class));
         });
 
         imgChat.setOnClickListener(v -> {
-            show(imgChat, new UsersFragment(), "Chat");
+//            show(imgChat, new UsersFragment(), "Chat");
         });
 
         imgProfile.setOnClickListener(v -> {
             show(imgProfile, new ProfileFragment(), "Profile");
         });
+
+        if (!permissionHelper.isGranted())
+            permissionHelper.request();
+        else showFragment(new HomeFragment(), "Home");
+
+        findViewById(R.id.actionMore).setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(CustomerActivity.this, LoginActivity.class));
+            finish();
+        });
+
 
     }
 
@@ -84,5 +104,13 @@ public class CustomerActivity extends BaseActivity {
         showFragment(fragment, fragTAG);
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (PermissionHelper.PERMISSION_CODE == requestCode && permissionHelper.isGranted())
+            showFragment(new HomeFragment(), "Home");
     }
 }
