@@ -1,37 +1,31 @@
 package com.bike.maintenance.ars.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bike.maintenance.ars.Activities.BaseActivity;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.adapters.OrdersRequestsAdapter;
 
-public class OrdersFragment extends Fragment {
+public class OrdersActivity extends BaseActivity {
 
     private OrdersRequestsAdapter mAdapter;
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_orders, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_orders);
 
-        RecyclerView mRecyclerView = view.findViewById(R.id.ordersRecyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        RecyclerView mRecyclerView = findViewById(R.id.ordersRecyclerview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new OrdersRequestsAdapter(getActivity());
+        mAdapter = new OrdersRequestsAdapter(this);
 
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-        return view;
     }
+
 }
