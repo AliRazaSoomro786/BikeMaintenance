@@ -15,11 +15,11 @@ import com.bike.maintenance.ars.R;
 import com.jackandphantom.circularimageview.CircleImage;
 
 
-public class BuyerRequestAdapter extends RecyclerView.Adapter<BuyerRequestAdapter.MyViewHolder> {
+public class OrdersRequestsAdapter extends RecyclerView.Adapter<OrdersRequestsAdapter.MyViewHolder> {
     private final Activity activity;
 //    private final ItemClickListener itemClickListener;
 
-    public BuyerRequestAdapter(Activity activity/*, ItemClickListener itemClickListener*/) {
+    public OrdersRequestsAdapter(Activity activity/*, ItemClickListener itemClickListener*/) {
         this.activity = activity;
 //        this.itemClickListener = itemClickListener;
     }

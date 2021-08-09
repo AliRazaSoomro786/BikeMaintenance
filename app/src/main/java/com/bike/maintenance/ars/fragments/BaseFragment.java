@@ -1,4 +1,4 @@
-package com.konnnect.walletdroid.fragments;
+package com.bike.maintenance.ars.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.konnnect.walletdroid.R;
-import com.konnnect.walletdroid.helper.Logging;
+import com.bike.maintenance.ars.R;
+import com.bike.maintenance.ars.Utils.Logging;
 
 
 public abstract class BaseFragment extends Fragment {
@@ -117,7 +117,7 @@ public abstract class BaseFragment extends Fragment {
     public final void open(@NonNull BaseFragment fragment) {
         FragmentManager fm = getFragmentManager();
         if (fm != null) {
-            fm.beginTransaction().replace(R.id.container, fragment, fragment.getClass().getSimpleName())
+            fm.beginTransaction().replace(R.id.main_fragment_container, fragment, fragment.getClass().getSimpleName())
                     .addToBackStack(this.getClass().getSimpleName()).commit();
         } else {
             slogging.error("Null fragmentManager for fragment : " + fragment.getClass().getSimpleName());

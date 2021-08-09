@@ -1,4 +1,4 @@
-package com.konnnect.walletdroid.fragments.fragments_navigation;
+package com.bike.maintenance.ars.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -15,56 +15,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.bike.maintenance.ars.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.konnnect.walletdroid.PasswordView;
-import com.konnnect.walletdroid.R;
-import com.konnnect.walletdroid.activities.MainActivity;
-import com.konnnect.walletdroid.models.Account;
-import com.konnnect.walletdroid.models.Group;
+import com.jackandphantom.circularimageview.CircleImage;
 
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static android.app.Activity.RESULT_OK;
 
-public class userprofile extends Fragment {
+public class ProfileFragment extends BaseFragment {
 
     private static final int PERMISSION_CODE = 10101;
     private static final int IMAGE_PICK_CODE = 10102;
     FirebaseAuth mAuth;
     Uri mImageUri;
-    private UserprofileViewModel mViewModel;
-    private CircleImageView userProfile;
+    private CircleImage userProfile;
     private StorageReference mStorageRef;
 
-    public static userprofile newInstance() {
-        return new userprofile();
-    }
+
+    /// todo break time - 15 minutes ----
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,7 +60,6 @@ public class userprofile extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(UserprofileViewModel.class);
         // TODO: Use the ViewModel
 
         mAuth = FirebaseAuth.getInstance();
@@ -93,7 +77,6 @@ public class userprofile extends Fragment {
 
 
         userProfile = getView().findViewById(R.id.userProfile);
-        loadImaProfileImage();
 
         getView().findViewById(R.id.actionChangePassword).setOnClickListener(v -> {
             openDialog();
@@ -107,7 +90,7 @@ public class userprofile extends Fragment {
         AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
         dialog.setView(view);
 
-        PasswordView edtPassword = view.findViewById(R.id.edtEmail);
+        EditText edtPassword = view.findViewById(R.id.edtEmail);
 
 
         view.findViewById(R.id.actionCancel).setOnClickListener(v1 -> dialog.dismiss());
@@ -129,8 +112,7 @@ public class userprofile extends Fragment {
                             mPB.dismiss();
                             Toast.makeText(getActivity(), "Password updated successfully", Toast.LENGTH_SHORT).show();
                             new Handler().postDelayed(() -> {
-                                startActivity(new Intent(getActivity(), MainActivity.class));
-                                getActivity().finish();
+                                remove(this);
                             }, 500);
                         } else {
                             mPB.dismiss();
@@ -203,95 +185,48 @@ public class userprofile extends Fragment {
 
     private void addCityToDb(String url) {
 
-        FirebaseFirestore.getInstance().collection("Accounts").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot accountSnapshot = task.getResult();
-                if (null != accountSnapshot) {
-                    Optional<Account> account = accountSnapshot.toObjects(Account.class).stream().findFirst();
-                    if (account.isPresent()) {
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put("imageURL", url);
-                        hashMap.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-                        FirebaseDatabase.getInstance().
-                                getReference().
-                                child("ProfileImages")
-                                .child(account.get().getId()).
-                                setValue(hashMap);
-                    }
-                }
-            }
-        });
-
-    }
-
-    private void loadImaProfileImage() {
-
-        FirebaseFirestore.getInstance().collection("Accounts").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot accountSnapshot = task.getResult();
-                if (null != accountSnapshot) {
-                    Optional<Account> account = accountSnapshot.toObjects(Account.class).stream().findFirst();
-                    account.ifPresent(value -> FirebaseDatabase.getInstance().getReference()
-                            .child("ProfileImages")
-                            .child(value.getId())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (!snapshot.hasChild("imageURL")) return;
-                                    loadGlide(snapshot.child("imageURL").getValue().toString());
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            }));
-                }
-            }
-        });
-
-        Executors.newSingleThreadExecutor().execute(() -> {
-            FirebaseDatabase.getInstance().getReference().child("ProfileImages").
-                    child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
-                    addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild("imageURL")) {
-                                getActivity().runOnUiThread(() -> loadGlide(dataSnapshot.child("imageURL").getValue().toString()));
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-        });
-
+//        FirebaseFirestore.getInstance().collection("Accounts").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                QuerySnapshot accountSnapshot = task.getResult();
+//                if (null != accountSnapshot) {
+//                    Optional<Account> account = accountSnapshot.toObjects(Account.class).stream().findFirst();
+//                    if (account.isPresent()) {
+//                        HashMap<String, String> hashMap = new HashMap<>();
+//                        hashMap.put("imageURL", url);
+//                        hashMap.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+//
+//                        FirebaseDatabase.getInstance().
+//                                getReference().
+//                                child("ProfileImages")
+//                                .child(account.get().getId()).
+//                                setValue(hashMap);
+//                    }
+//                }
+//            }
+//        });
 
     }
+
 
     private void loadGlide(String imageURL) {
-        Glide.with(this)
-                .load(imageURL)
-                .addListener(new RequestListener<Drawable>() {
-                    @SuppressLint("NewApi")
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-
-                        userProfile.setImageResource(R.drawable.user_profile);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
-
-                        return false;
-                    }
-                })
-                .into(userProfile);
+//        Glide.with(this)
+//                .load(imageURL)
+//                .addListener(new RequestListener<Drawable>() {
+//                    @SuppressLint("NewApi")
+//                    @Override
+//                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//
+//                        userProfile.setImageResource(R.drawable.user_profile);
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+//
+//                        return false;
+//                    }
+//                })
+//                .into(userProfile);
     }
 
 
