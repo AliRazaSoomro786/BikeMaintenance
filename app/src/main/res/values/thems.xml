@@ -19,4 +19,9 @@
     <style name="MyTheme">
         <item name="background">@color/white</item>
     </style>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorAccent">@color/design_default_color_primary_variant</item>
+    </style>
 </resources>

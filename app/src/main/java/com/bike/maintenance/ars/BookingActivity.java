@@ -1,53 +1,91 @@
 package com.bike.maintenance.ars;
 
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bike.maintenance.ars.Activities.BaseActivity;
+import com.bike.maintenance.ars.Utils.AppConstant;
+import com.bike.maintenance.ars.Utils.DialogUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class BookingActivity extends BaseActivity {
-    EditText name, number, emailaddress, address, selectcompany, powerengine, selectservice, selectdate, selecttime;
-    Button submit;
+    private EditText name, number, emailaddress, address, selectcompany, powerengine, repairDescription, selectdate, selecttime;
+    private Button submit;
+
+    private DialogUtils mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appoitment_activity);
+
         name = findViewById(R.id.name);
         number = findViewById(R.id.number);
         emailaddress = findViewById(R.id.emailaddress);
         address = findViewById(R.id.address);
         selectcompany = findViewById(R.id.selectcompany);
         powerengine = findViewById(R.id.powerengine);
-        selectservice = findViewById(R.id.selectservice);
-        selectdate = findViewById(R.id.selcetdate);
-        selecttime = findViewById(R.id.selecttime);
+        repairDescription = findViewById(R.id.selectservice);
         submit = findViewById(R.id.submit);
 
+        mDialog = new DialogUtils(this);
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getText(name).isEmpty())
-                    name.setError("Please Enter Name");
-                else if (getText(number).isEmpty())
-                    number.setError("Please Enter Number");
-                else if (getText(emailaddress).isEmpty())
-                    emailaddress.setError("Please Enter EmialAddress");
-                else if (getText(address).isEmpty())
-                    address.setError("Please Enter Address");
-                else if (getText(selectcompany).isEmpty())
-                    selectcompany.setError("Please Enter CompanyName");
-                else if (getText(powerengine).isEmpty())
-                    powerengine.setError("Please Enter PowerEngine(cc)");
-                else if (getText(selectservice).isEmpty())
-                    selectservice.setError("Please Enter ServiceType");
-                else if (getText(selectdate).isEmpty())
-                    selectdate.setError("Please Enter Date");
-                else if (getText(selecttime).isEmpty())
-                    selecttime.setError("Please Enter Time");
+
+        submit.setOnClickListener(v -> {
+            if (getText(name).isEmpty())
+                name.setError("Please Enter Name");
+
+            else if (getText(number).isEmpty())
+                number.setError("Please Enter Number");
+
+            else if (getText(emailaddress).isEmpty())
+                emailaddress.setError("Please Enter EmialAddress");
+
+            else if (getText(address).isEmpty())
+                address.setError("Please Enter Address");
+
+            else if (getText(selectcompany).isEmpty())
+                selectcompany.setError("Please Enter CompanyName");
+
+            else if (getText(powerengine).isEmpty())
+                powerengine.setError("Please Enter PowerEngine(cc)");
+
+            else if (getText(repairDescription).isEmpty())
+                repairDescription.setError("Please Enter ServiceType");
+
+            else {
+
+                String uid = getIntent().getStringExtra("uid");
+
+                mDialog.show("Please wait....");
+
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put("name", getText(name));
+                hashMap.put("number", getText(number));
+                hashMap.put("email", getText(emailaddress));
+                hashMap.put("address", getText(address));
+                hashMap.put("company", getText(selectcompany));
+                hashMap.put("powerengine", getText(powerengine));
+                hashMap.put("repairdescription", getText(repairDescription));
+                hashMap.put("timestamp", System.currentTimeMillis() + "");
+                hashMap.put("mechanicuid", uid);
+                hashMap.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child(AppConstant.BOOKING_REQUESTS)
+                        .push()
+                        .setValue(hashMap).addOnCompleteListener(task -> {
+                    if (mDialog.isShowing()) mDialog.dismiss();
+                    Toast.makeText(this, "Booking request sent successfully...", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(this::finish, 300);
+
+                });
             }
         });
     }

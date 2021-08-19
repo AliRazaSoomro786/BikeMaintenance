@@ -17,6 +17,10 @@ public class Mechanic {
         this.phone = phone;
     }
 
+    public Mechanic() {
+
+    }
+
     public double getLat() {
         return lat;
     }

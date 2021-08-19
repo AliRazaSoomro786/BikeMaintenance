@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bike.maintenance.ars.BookingActivity;
 import com.bike.maintenance.ars.MapsActivity;
 import com.bike.maintenance.ars.R;
 
@@ -23,11 +22,9 @@ public class HomeFragment extends BaseFragment {
                 setOnClickListener(v ->
                         startActivity(new Intent(v.getContext(), MapsActivity.class)));
 
-        view.findViewById(R.id.actionOnBooking).
-                setOnClickListener(v ->
-                        startActivity(new Intent(v.getContext(), BookingActivity.class)));
-        // todo me keh raha hoo net slow hai screenshare krny se aur slow ho raha mery screenshot bhi jaa rhy to me kaam to kr raha
-        // todo hoo krky apk share krdeta hoo okay ?
+        view.findViewById(R.id.actionOnBooking).setOnClickListener(v -> {
+            open(new MechanicsFragment());
+        });
 
         return view;
     }

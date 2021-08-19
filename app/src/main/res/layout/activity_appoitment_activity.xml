@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backed"
+    android:background="@drawable/bike_mechanics"
     android:orientation="vertical"
     tools:context=".BookingActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp">
+        android:background="#612196F3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,6 +37,7 @@
                 android:gravity="center"
                 android:text="APPOINTMENT"
                 android:textColor="@color/white"
+                android:textSize="@dimen/xxxlarge_text_size"
                 android:textStyle="bold" />
 
             <EditText
@@ -49,7 +50,7 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <EditText
                 android:id="@+id/number"
@@ -58,10 +59,10 @@
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/white"
                 android:hint="Mobile Number"
-                android:inputType="text"
+                android:inputType="phone"
                 android:textColor="@color/black"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <EditText
                 android:id="@+id/emailaddress"
@@ -73,7 +74,7 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <EditText
                 android:id="@+id/address"
@@ -85,7 +86,7 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <EditText
                 android:id="@+id/selectcompany"
@@ -93,11 +94,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/white"
-                android:hint="Select Company"
+                android:hint="Company"
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <EditText
                 android:id="@+id/powerengine"
@@ -109,7 +110,7 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <EditText
                 android:id="@+id/selectservice"
@@ -117,70 +118,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/white"
-                android:hint="Select Service"
+                android:hint="Complete repair description"
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/selcetdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="@color/white"
-                android:hint="Select Date"
-                android:inputType="text"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/selecttime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="@color/white"
-                android:hint="Select Time"
-                android:inputType="text"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="20dp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="100dp"
-                    android:text="City"
-                    android:textColor="@color/purple_700"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Lahore"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:textSize="@dimen/normal_text_size" />
 
             <Button
                 android:id="@+id/submit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="50dp"
+                android:layout_marginTop="@dimen/margin_20_dp"
                 android:layout_marginRight="50dp"
-                android:background="#1B0259"
-                android:text="submit" />
+                android:background="@drawable/button_bg"
+                android:text="submit"
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

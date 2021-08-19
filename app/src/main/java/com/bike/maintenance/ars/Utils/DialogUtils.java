@@ -9,7 +9,7 @@ public class DialogUtils {
     private final ProgressDialog mDialog;
 
     public DialogUtils(Context context) {
-        mDialog = new ProgressDialog(context);
+        mDialog = new ProgressDialog(context, R.style.MyAlertDialogStyle);
     }
 
     public void show(String message) {

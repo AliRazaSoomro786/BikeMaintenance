@@ -1,7 +1,6 @@
 package com.bike.maintenance.ars;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static com.bike.maintenance.ars.Utils.Helper.makeCall;
+import static com.bike.maintenance.ars.Utils.Helper.sendMessage;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Listener {
     private final ArrayList<Mechanic> mechanics = new ArrayList<>();
@@ -163,8 +164,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
 
     private void mechanicDetailsDialog(final String uid) {
         LayoutInflater factory = LayoutInflater.from(MapsActivity.this);
+
         final View mView = factory.inflate(R.layout.mechanic_info_dialog, null);
         final androidx.appcompat.app.AlertDialog deleteDialog = new androidx.appcompat.app.AlertDialog.Builder(MapsActivity.this).create();
+
         deleteDialog.setView(mView);
 
         TextView name = mView.findViewById(R.id.custom_dialoge_tv_name);
@@ -175,13 +178,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
         final Mechanic item = mechanic(uid);
 
         if (item == null) return;
+
         name.setText(item.getName());
+
         phone.setText(item.getPhone());
+
         address.setText("Location : Lat : Lng" + item.getLat() + ":" + item.getLng());
 
-        mView.findViewById(R.id.custom_dialoge_msg_icon).setOnClickListener(v -> sendMessage(item.getPhone()));
+        mView.findViewById(R.id.custom_dialoge_msg_icon).
+                setOnClickListener(v -> sendMessage(item.getPhone(), this));
 
-        mView.findViewById(R.id.custom_dialoge_call_icon).setOnClickListener(v -> makeCall(item.getPhone()));
+        mView.findViewById(R.id.custom_dialoge_call_icon).
+                setOnClickListener(v -> makeCall(item.getPhone(), this));
 
         mView.findViewById(R.id.custom_dialge_tv_cancel).
                 setOnClickListener(v -> deleteDialog.dismiss());
@@ -196,24 +204,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
         return null;
     }
 
-    private void sendMessage(String phone) {
-        try {
-            Intent i = new Intent(Intent.ACTION_VIEW);
-
-            i.putExtra("address", phone);
-            i.putExtra("sms_body", "Aslam O Alaikum");
-            i.setType("vnd.android-dir/mms-sms");
-            startActivity(i);
-        } catch (Exception e) {
-            System.out.println("Exception Screen : QarisahbAdapter" + e.toString());
-        }
-    }
-
-    private void makeCall(String phone) {
-        Intent call = new Intent(Intent.ACTION_DIAL);
-        call.setData(Uri.parse("tel:" + phone));
-        startActivity(call);
-    }
 
     @Override
     public void currentLocation(Location location) {
