@@ -27,16 +27,6 @@ public class SplashScreen extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("test", "firebase add data");
-
-        FirebaseDatabase.getInstance().getReference().child("Test")
-                .setValue(hashMap)
-                .addOnFailureListener(e ->
-                        Log.d("Firebase-Message", "onFailure:" + e.getMessage())).
-                addOnCompleteListener(task ->
-                        Log.d("Firebase-Message", "onComplete: "));
 //
         if (isNewUser()) {
             new Handler().postDelayed(() -> {

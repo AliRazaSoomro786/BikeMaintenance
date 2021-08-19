@@ -26,7 +26,8 @@ public class HomeFragment extends BaseFragment {
         view.findViewById(R.id.actionOnBooking).
                 setOnClickListener(v ->
                         startActivity(new Intent(v.getContext(), BookingActivity.class)));
-        // todo hamza/bilal remind me for screenshot after every 30 minutes ... okay ?
+        // todo me keh raha hoo net slow hai screenshare krny se aur slow ho raha mery screenshot bhi jaa rhy to me kaam to kr raha
+        // todo hoo krky apk share krdeta hoo okay ?
 
         return view;
     }

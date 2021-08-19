@@ -1,10 +1,20 @@
 package com.bike.maintenance.ars;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -18,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,22 +39,46 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Listener {
+    private final ArrayList<Mechanic> mechanics = new ArrayList<>();
+    private final ArrayList<Marker> mMechanicsMarkers = new ArrayList<>();
     private GoogleMap mMap;
-    private ArrayList<Mechanic> mechanics = new ArrayList<>();
-    private ArrayList<Marker> mMechanicsMarkers = new ArrayList<>();
     private Marker mMarker;
+
+    private static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float scaleX = newWidth / (float) bitmap.getWidth();
+        float scaleY = newHeight / (float) bitmap.getHeight();
+        float pivotX = 0;
+        float pivotY = 0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+    }
+
+    private EasyWayLocation easyWayLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onroad_activity);
-        EasyWayLocation easyWayLocation = new EasyWayLocation(this, false, this);
+        easyWayLocation = new EasyWayLocation(this, false, this);
         easyWayLocation.startLocation();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        findViewById(R.id.actionBackPress).setOnClickListener(v -> {
+            finish();
+        });
     }
 
     /**
@@ -67,11 +102,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
         mMap.getUiSettings().setMyLocationButtonEnabled(true); //my code did not have t
         loadMechanics();
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
-                return false;
-            }
+        mMap.setOnMarkerClickListener(marker -> {
+            if (marker.getTag() == null) return false;
+            mechanicDetailsDialog(marker.getTag().toString());
+            return false;
         });
     }
 
@@ -98,8 +132,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
                                         for (Marker marker : mMechanicsMarkers)
                                             marker.remove();
 
+                                    Bitmap markerBitmap = scaleBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mechanic), 70, 70);
+
                                     for (Mechanic mechanic : mechanics) {
-                                        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mechanic.getLat(), mechanic.getLng())).title(mechanic.getName()));
+                                        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mechanic.getLat(), mechanic.getLng())).
+                                                icon(BitmapDescriptorFactory.fromBitmap(markerBitmap)).title(mechanic.getName()));
                                         marker.setTag(mechanic.getUid());
                                         mMechanicsMarkers.add(marker);
                                     }
@@ -124,14 +161,68 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
 
     }
 
+    private void mechanicDetailsDialog(final String uid) {
+        LayoutInflater factory = LayoutInflater.from(MapsActivity.this);
+        final View mView = factory.inflate(R.layout.mechanic_info_dialog, null);
+        final androidx.appcompat.app.AlertDialog deleteDialog = new androidx.appcompat.app.AlertDialog.Builder(MapsActivity.this).create();
+        deleteDialog.setView(mView);
+
+        TextView name = mView.findViewById(R.id.custom_dialoge_tv_name);
+        TextView phone = mView.findViewById(R.id.custom_dialoge_tv_phone);
+        TextView address = mView.findViewById(R.id.custom_dialoge_tv_address);
+
+
+        final Mechanic item = mechanic(uid);
+
+        if (item == null) return;
+        name.setText(item.getName());
+        phone.setText(item.getPhone());
+        address.setText("Location : Lat : Lng" + item.getLat() + ":" + item.getLng());
+
+        mView.findViewById(R.id.custom_dialoge_msg_icon).setOnClickListener(v -> sendMessage(item.getPhone()));
+
+        mView.findViewById(R.id.custom_dialoge_call_icon).setOnClickListener(v -> makeCall(item.getPhone()));
+
+        mView.findViewById(R.id.custom_dialge_tv_cancel).
+                setOnClickListener(v -> deleteDialog.dismiss());
+
+        deleteDialog.show();
+    }
+
+    private Mechanic mechanic(String uid) {
+        for (Mechanic mechanic : mechanics)
+            if (mechanic.getUid().equals(uid)) return mechanic;
+
+        return null;
+    }
+
+    private void sendMessage(String phone) {
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+
+            i.putExtra("address", phone);
+            i.putExtra("sms_body", "Aslam O Alaikum");
+            i.setType("vnd.android-dir/mms-sms");
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println("Exception Screen : QarisahbAdapter" + e.toString());
+        }
+    }
+
+    private void makeCall(String phone) {
+        Intent call = new Intent(Intent.ACTION_DIAL);
+        call.setData(Uri.parse("tel:" + phone));
+        startActivity(call);
+    }
+
     @Override
     public void currentLocation(Location location) {
         if (location == null) return;
         if (mMarker != null)
             mMarker.remove();
 
-        mMarker = mMap.addMarker(new MarkerOptions().title("Current location").position(new LatLng(location.getLatitude(), location.getLongitude())));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.f));
+        easyWayLocation.endUpdates();
 
     }
 
