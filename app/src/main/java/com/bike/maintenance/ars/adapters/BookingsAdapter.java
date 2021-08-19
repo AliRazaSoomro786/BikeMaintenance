@@ -11,17 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bike.maintenance.ars.Model.Bookings;
 import com.bike.maintenance.ars.R;
 import com.jackandphantom.circularimageview.CircleImage;
 
+import java.util.Date;
+import java.util.List;
 
-public class OrdersRequestsAdapter extends RecyclerView.Adapter<OrdersRequestsAdapter.MyViewHolder> {
-    private final Activity activity;
-//    private final ItemClickListener itemClickListener;
 
-    public OrdersRequestsAdapter(Activity activity/*, ItemClickListener itemClickListener*/) {
-        this.activity = activity;
-//        this.itemClickListener = itemClickListener;
+public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyViewHolder> {
+    private final List<Bookings> bookings;
+
+    public BookingsAdapter(List<Bookings> bookings) {
+        this.bookings = bookings;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -55,22 +57,24 @@ public class OrdersRequestsAdapter extends RecyclerView.Adapter<OrdersRequestsAd
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-//        final BuyerRequest item = Global.buyerList.get(position);
-//        try {
-//            holder.mName.setText(item.getName());
-//            holder.mStauts.setText(item.getStatus());
-//            holder.description.setText(item.getDetails());
-//            holder.mDateTime.setText(activity.getString(R.string.date_time) + "" + item.getDate() + ":" + item.getTime());
+        final Bookings item = bookings.get(position);
+
+        if (item == null) return;
+
+        holder.mName.setText(item.getName());
+        holder.mStauts.setText(item.isStatus() ? "Accepted" : "In-progress");
+        holder.description.setText(item.getRepairdescription());
+//        holder.mDateTime.setText(new Date(item.getTimestamp()) + "");
 //
-//            if (Global.currentUser.getType().equals("1")) {
-//                holder.actionCancel.setText("Accept");
-//            } else {
-//                holder.actionCancel.setText("Cancel");
-//            }
-//
-//            if (holder.mStauts.getText().toString().equals("Accepted")) {
-//                holder.actionCancel.setText("Cancel");
-//            }
+//        if (Global.currentUser.getType().equals("1")) {
+//            holder.actionCancel.setText("Accept");
+//        } else {
+//            holder.actionCancel.setText("Cancel");
+//        }
+
+//        if (holder.mStauts.getText().toString().equals("Accepted")) {
+//            holder.actionCancel.setText("Cancel");
+//        }
 
 //            holder.actionCancel.setOnClickListener(v -> {
 //                if (holder.actionCancel.getText().toString().equals("Cancel")) {
@@ -125,24 +129,24 @@ public class OrdersRequestsAdapter extends RecyclerView.Adapter<OrdersRequestsAd
 //    {
 //        System.out.println("Exception Screen : QariSahbAdapter" + e.toString());
 //    }
-}
+    }
 
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return bookings.size();
     }
 
 
-public interface DialogListener {
-    void onYes();
+    public interface DialogListener {
+        void onYes();
 
-}
+    }
 
     private void acceptRejectOffers(Activity activity, DialogListener listener, String msg) {
         LayoutInflater layoutInflater = activity.getLayoutInflater();

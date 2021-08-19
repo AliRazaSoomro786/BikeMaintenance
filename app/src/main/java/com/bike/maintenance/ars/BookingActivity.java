@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class BookingActivity extends BaseActivity {
     private EditText name, number, emailaddress, address, selectcompany, powerengine, repairDescription, selectdate, selecttime;
@@ -62,10 +63,10 @@ public class BookingActivity extends BaseActivity {
             else {
 
                 String uid = getIntent().getStringExtra("uid");
-
+                String key = UUID.randomUUID().toString();
                 mDialog.show("Please wait....");
 
-                HashMap<String, String> hashMap = new HashMap<>();
+                HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("name", getText(name));
                 hashMap.put("number", getText(number));
                 hashMap.put("email", getText(emailaddress));
@@ -75,11 +76,13 @@ public class BookingActivity extends BaseActivity {
                 hashMap.put("repairdescription", getText(repairDescription));
                 hashMap.put("timestamp", System.currentTimeMillis() + "");
                 hashMap.put("mechanicuid", uid);
+                hashMap.put("staus", false);
+                hashMap.put("key", key);
                 hashMap.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 FirebaseDatabase.getInstance().getReference()
                         .child(AppConstant.BOOKING_REQUESTS)
-                        .push()
+                        .child(key)
                         .setValue(hashMap).addOnCompleteListener(task -> {
                     if (mDialog.isShowing()) mDialog.dismiss();
                     Toast.makeText(this, "Booking request sent successfully...", Toast.LENGTH_SHORT).show();
