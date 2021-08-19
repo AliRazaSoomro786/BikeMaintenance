@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bike.maintenance.ars.Model.Mechanic;
 import com.bike.maintenance.ars.R;
+import com.bike.maintenance.ars.Utils.Helper;
 
 import java.util.List;
 
@@ -42,8 +43,10 @@ public class MechanicsAdapter extends RecyclerView.Adapter<MechanicsAdapter.View
         holder.mAddress.setText("Location : lat : lng " + item.getLat() + " : " + item.getLng());
 
         holder.actionMessage.setOnClickListener(v -> {
+            listener.onSendMessage(position);
         });
         holder.actionCall.setOnClickListener(v -> {
+            Helper.makeCall(item.getPhone(), v.getContext());
         });
         holder.actionSendRequest.setOnClickListener(v -> {
             listener.onItemClick(position);
@@ -58,6 +61,8 @@ public class MechanicsAdapter extends RecyclerView.Adapter<MechanicsAdapter.View
 
     public interface ItemClickListener {
         void onItemClick(int position);
+
+        void onSendMessage(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

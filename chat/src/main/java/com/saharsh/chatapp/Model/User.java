@@ -4,21 +4,21 @@ public class User {
 
     private String image;
     private String phone;
-    private String type;
+    private String userType;
     private String uid;
-    private String username;
+    private String name;
     private String about;
 
     public User() {
 
     }
 
-    public User(String about, String image, String phone, String type, String uid, String username) {
+    public User(String about, String image, String phone, String userType, String uid, String name) {
         this.image = image;
         this.phone = phone;
-        this.type = type;
+        this.userType = userType;
         this.uid = uid;
-        this.username = username;
+        this.name = name;
         this.about = about;
     }
 
@@ -38,16 +38,16 @@ public class User {
         return phone;
     }
 
-    public String getType() {
-        return type;
+    public String getUserType() {
+        return userType;
     }
 
     public String getUid() {
         return uid;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public void setImage(String image) {
@@ -58,14 +58,14 @@ public class User {
         this.phone = phone;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }}

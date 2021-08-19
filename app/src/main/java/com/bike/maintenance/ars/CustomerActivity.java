@@ -18,6 +18,8 @@ import com.bike.maintenance.ars.fragments.HomeFragment;
 import com.bike.maintenance.ars.fragments.OrdersActivity;
 import com.bike.maintenance.ars.fragments.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.saharsh.chatapp.Fragments.ChatsFragment;
+import com.saharsh.chatapp.Fragments.UsersFragment;
 //import com.saharsh.chatapp.Fragments.UsersFragment;
 
 public class CustomerActivity extends BaseActivity {
@@ -50,7 +52,7 @@ public class CustomerActivity extends BaseActivity {
         });
 
         imgChat.setOnClickListener(v -> {
-//            show(imgChat, new UsersFragment(), "Chat");
+            show(imgChat, new ChatsFragment(), "Chat");
         });
 
         imgProfile.setOnClickListener(v -> {

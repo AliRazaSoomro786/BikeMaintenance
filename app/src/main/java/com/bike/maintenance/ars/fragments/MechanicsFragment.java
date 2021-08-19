@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saharsh.chatapp.MessageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,20 @@ public class MechanicsFragment extends BaseFragment {
         RecyclerView recyclerView = view.findViewById(R.id.mechanicsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
 
-        mAdapter = new MechanicsAdapter(mechanics, position -> {
-            Intent intent = new Intent(inflater.getContext(), BookingActivity.class);
-            intent.putExtra("uid", mechanics.get(position).getUid());
-            startActivity(intent);
+        mAdapter = new MechanicsAdapter(mechanics, new MechanicsAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(inflater.getContext(), BookingActivity.class);
+                intent.putExtra("uid", mechanics.get(position).getUid());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onSendMessage(int position) {
+                Intent intent = new Intent(inflater.getContext(), MessageActivity.class);
+                intent.putExtra("uid", mechanics.get(position).getUid());
+                startActivity(intent);
+            }
         });
 
         recyclerView.setAdapter(mAdapter);
@@ -49,6 +60,7 @@ public class MechanicsFragment extends BaseFragment {
 
         return view;
     }
+
 
     private void loadMechanics() {
         FirebaseDatabase.getInstance().getReference()

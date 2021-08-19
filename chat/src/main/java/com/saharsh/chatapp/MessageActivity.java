@@ -73,10 +73,11 @@ public class MessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // and this
+                finish();
             }
         });
 
@@ -97,7 +98,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
         intent = getIntent();
-        userid = intent.getStringExtra("userid");
+        userid = intent.getStringExtra("uid");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -116,14 +117,16 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
-        reference = FirebaseDatabase.getInstance().getReference("USERS").child(userid);
+        reference = FirebaseDatabase.getInstance().getReference("users").child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getUsername());
-                if (user.getImage().equals("image")) {
+                username.setText(user.getName());
+
+
+                if (user.getImage() == null || user.getImage().equals("image")) {
                     profile_image.setImageResource(R.drawable.profile_img);
                 } else {
                     //and this

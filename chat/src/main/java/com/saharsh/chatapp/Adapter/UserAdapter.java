@@ -64,8 +64,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.username.setTypeface(MR);
         holder.last_msg.setTypeface(MRR);
 
-        holder.username.setText(user.getUsername());
-        if (user.getImage().equals("image")) {
+        holder.username.setText(user.getName());
+        if (user.getImage() == null || user.getImage().equals("image")) {
             holder.profile_image.setImageResource(R.mipmap.ic_launcher);
         } else {
             Glide.with(mContext).load(user.getImage()).into(holder.profile_image);
@@ -94,7 +94,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MessageActivity.class);
-                intent.putExtra("userid", user.getUid());
+                intent.putExtra("uid", user.getUid());
                 mContext.startActivity(intent);
             }
         });

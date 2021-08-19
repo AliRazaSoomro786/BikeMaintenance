@@ -23,9 +23,9 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
-    public static  final int MSG_TYPE_LEFT = 0;
-    public static  final int MSG_TYPE_RIGHT = 1;
-    Typeface MR,MRR;
+    public static final int MSG_TYPE_LEFT = 0;
+    public static final int MSG_TYPE_RIGHT = 1;
+    Typeface MR, MRR;
 
 
     private Context mContext;
@@ -34,7 +34,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     FirebaseUser fuser;
 
-    public MessageAdapter(Context mContext, List<Chat> mChat, String imageurl){
+    public MessageAdapter(Context mContext, List<Chat> mChat, String imageurl) {
         this.mChat = mChat;
         this.mContext = mContext;
         this.imageurl = imageurl;
@@ -64,18 +64,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.txt_seen.setTypeface(MRR);
 
         holder.show_message.setText(chat.getMessage());
-        if(chat.getTime()!=null && !chat.getTime().trim().equals("")) {
+        if (chat.getTime() != null && !chat.getTime().trim().equals("")) {
             holder.time_tv.setText(holder.convertTime(chat.getTime()));
         }
 
-        if (imageurl.equals("default")){
+        if (imageurl == null || imageurl.equals("default")) {
             holder.profile_image.setImageResource(R.drawable.profile_img);
         } else {
             Glide.with(mContext).load(imageurl).into(holder.profile_image);
         }
 
-        if (position == mChat.size()-1){
-            if (chat.isIsseen()){
+        if (position == mChat.size() - 1) {
+            if (chat.isIsseen()) {
                 holder.txt_seen.setText("Seen");
             } else {
                 holder.txt_seen.setText("Delivered");
@@ -91,12 +91,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         return mChat.size();
     }
 
-    public  class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView show_message;
         public ImageView profile_image;
         public TextView txt_seen;
         public TextView time_tv;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -106,7 +107,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             time_tv = itemView.findViewById(R.id.time_tv);
         }
 
-        public String convertTime(String time){
+        public String convertTime(String time) {
             SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
             String dateString = formatter.format(new Date(Long.parseLong(time)));
             return dateString;
@@ -116,7 +117,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public int getItemViewType(int position) {
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mChat.get(position).getSender().equals(fuser.getUid())){
+        if (mChat.get(position).getSender().equals(fuser.getUid())) {
             return MSG_TYPE_RIGHT;
         } else {
             return MSG_TYPE_LEFT;
