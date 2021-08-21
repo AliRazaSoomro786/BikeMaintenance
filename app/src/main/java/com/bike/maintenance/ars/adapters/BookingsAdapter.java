@@ -15,7 +15,6 @@ import com.bike.maintenance.ars.Model.Bookings;
 import com.bike.maintenance.ars.R;
 import com.jackandphantom.circularimageview.CircleImage;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -63,8 +62,12 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyView
 
         holder.mName.setText(item.getName());
         holder.mStauts.setText(item.isStatus() ? "Accepted" : "In-progress");
-        holder.description.setText(item.getRepairdescription());
-//        holder.mDateTime.setText(new Date(item.getTimestamp()) + "");
+
+        String description = "Company : " + item.getCompany() + "\n" + "Power engine : " + item.getPowerengine()
+                + "\n Description : " + item.getRepairdescription();
+
+        holder.description.setText(description);
+        holder.mDateTime.setText(item.getTimestamp());
 //
 //        if (Global.currentUser.getType().equals("1")) {
 //            holder.actionCancel.setText("Accept");

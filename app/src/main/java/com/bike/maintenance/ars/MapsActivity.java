@@ -1,6 +1,7 @@
 package com.bike.maintenance.ars;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,11 +34,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.saharsh.chatapp.MessageActivity;
 
 import java.util.ArrayList;
 
 import static com.bike.maintenance.ars.Utils.Helper.makeCall;
-import static com.bike.maintenance.ars.Utils.Helper.sendMessage;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Listener {
     private final ArrayList<Mechanic> mechanics = new ArrayList<>();
@@ -186,13 +187,24 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
         address.setText("Location : Lat : Lng" + item.getLat() + ":" + item.getLng());
 
         mView.findViewById(R.id.custom_dialoge_msg_icon).
-                setOnClickListener(v -> sendMessage(item.getPhone(), this));
+                setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), MessageActivity.class);
+                    intent.putExtra("uid", item.getUid());
+                    startActivity(intent);
+                });
+
+        mView.findViewById(R.id.actionSendRequest).setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), BookingActivity.class);
+            intent.putExtra("uid", item.getUid());
+            startActivity(intent);
+        });
 
         mView.findViewById(R.id.custom_dialoge_call_icon).
                 setOnClickListener(v -> makeCall(item.getPhone(), this));
 
-        mView.findViewById(R.id.custom_dialge_tv_cancel).
-                setOnClickListener(v -> deleteDialog.dismiss());
+        TextView cancel = mView.findViewById(R.id.custom_dialge_tv_cancel);
+        cancel.setVisibility(View.VISIBLE);
+        cancel.setOnClickListener(v -> deleteDialog.dismiss());
 
         deleteDialog.show();
     }

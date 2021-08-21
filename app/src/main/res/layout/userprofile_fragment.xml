@@ -63,7 +63,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_camera" />
+                        android:src="@drawable/profile_picture" />
 
                     <ImageView
                         android:id="@+id/actionPickImage"

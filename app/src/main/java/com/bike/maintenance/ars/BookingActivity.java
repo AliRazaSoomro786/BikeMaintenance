@@ -12,6 +12,7 @@ import com.bike.maintenance.ars.Utils.DialogUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -74,7 +75,7 @@ public class BookingActivity extends BaseActivity {
                 hashMap.put("company", getText(selectcompany));
                 hashMap.put("powerengine", getText(powerengine));
                 hashMap.put("repairdescription", getText(repairDescription));
-                hashMap.put("timestamp", System.currentTimeMillis() + "");
+                hashMap.put("timestamp", new Date(System.currentTimeMillis()) + "");
                 hashMap.put("mechanicuid", uid);
                 hashMap.put("staus", false);
                 hashMap.put("key", key);

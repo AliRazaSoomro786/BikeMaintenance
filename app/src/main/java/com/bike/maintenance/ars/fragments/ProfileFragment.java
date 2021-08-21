@@ -50,6 +50,7 @@ public class ProfileFragment extends BaseFragment {
     Uri mImageUri;
     private CircleImage userProfile;
     private StorageReference mStorageRef;
+    private TextView tvname;
 
 
     /// todo break time - 15 minutes ----
@@ -68,10 +69,9 @@ public class ProfileFragment extends BaseFragment {
         mAuth = FirebaseAuth.getInstance();
 
         mStorageRef = FirebaseStorage.getInstance().getReference("ProfileImages");
-        TextView tvname = getView().findViewById(R.id.user_profile_name);
+        tvname = getView().findViewById(R.id.user_profile_name);
         TextView tvEmail = getView().findViewById(R.id.user_profile_email);
 
-        tvname.setText(mAuth.getCurrentUser().getDisplayName());
         tvEmail.setText(mAuth.getCurrentUser().getEmail());
 
         getView().findViewById(R.id.actionPickImage).setOnClickListener(v -> {
@@ -89,27 +89,24 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void loadImageFirebase() {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.getValue() == null) return;
+        Executors.newSingleThreadExecutor().execute(() -> FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.getValue() == null) return;
+                        tvname.setText(snapshot.child("name").getValue().toString());
 
-                                if (snapshot.hasChild("imageURL"))
-                                    loadGlide(snapshot.child("imageURL").getValue().toString());
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        if (snapshot.hasChild("imageURL"))
+                            loadGlide(snapshot.child("imageURL").getValue().toString());
+                    }
 
-                            }
-                        });
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                }));
     }
 
 
@@ -217,9 +214,10 @@ public class ProfileFragment extends BaseFragment {
         hashMap.put("imageURL", url);
 
         FirebaseDatabase.getInstance().
-                getReference().
-                child("users").
-                updateChildren(hashMap);
+                getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hashMap);
 
     }
 

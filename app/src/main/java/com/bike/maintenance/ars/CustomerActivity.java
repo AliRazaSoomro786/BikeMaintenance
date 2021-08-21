@@ -15,12 +15,10 @@ import com.bike.maintenance.ars.Activities.BaseActivity;
 import com.bike.maintenance.ars.Activities.LoginActivity;
 import com.bike.maintenance.ars.Utils.PermissionHelper;
 import com.bike.maintenance.ars.fragments.HomeFragment;
-import com.bike.maintenance.ars.fragments.OrdersActivity;
+import com.bike.maintenance.ars.fragments.OrdersFragment;
 import com.bike.maintenance.ars.fragments.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.saharsh.chatapp.Fragments.ChatsFragment;
-import com.saharsh.chatapp.Fragments.UsersFragment;
-//import com.saharsh.chatapp.Fragments.UsersFragment;
 
 public class CustomerActivity extends BaseActivity {
     private ImageView imgHome, imgOrders, imgChat, imgProfile;
@@ -44,19 +42,19 @@ public class CustomerActivity extends BaseActivity {
 
 
         imgHome.setOnClickListener(v -> {
-            show(imgHome, new HomeFragment(), "Home");
+            open(imgHome, new HomeFragment(), "Home");
         });
 
         imgOrders.setOnClickListener(v -> {
-            startActivity(new Intent(CustomerActivity.this, OrdersActivity.class));
+            open(imgOrders, new OrdersFragment(), "Orders");
         });
 
         imgChat.setOnClickListener(v -> {
-            show(imgChat, new ChatsFragment(), "Chat");
+            open(imgChat, new ChatsFragment(), "Chat");
         });
 
         imgProfile.setOnClickListener(v -> {
-            show(imgProfile, new ProfileFragment(), "Profile");
+            open(imgProfile, new ProfileFragment(), "Profile");
         });
 
         if (!permissionHelper.isGranted())
@@ -88,7 +86,7 @@ public class CustomerActivity extends BaseActivity {
     }
 
 
-    private void show(ImageView img, Fragment fragment, String fragTAG) {
+    private void open(ImageView img, Fragment fragment, String fragTAG) {
         ImageView[] navigationList = {imgChat, imgHome, imgOrders, imgProfile};
         for (ImageView imageView : navigationList) {
             if (img.getTag().equals(imageView.getTag())) {

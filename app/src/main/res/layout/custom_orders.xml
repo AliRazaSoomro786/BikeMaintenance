@@ -86,6 +86,7 @@
                     android:background="@drawable/container_bg"
                     android:padding="8dp"
                     android:text="Cancel"
+                    android:visibility="invisible"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />

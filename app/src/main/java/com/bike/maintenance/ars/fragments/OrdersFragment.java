@@ -1,13 +1,15 @@
 package com.bike.maintenance.ars.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bike.maintenance.ars.Activities.BaseActivity;
 import com.bike.maintenance.ars.Model.Bookings;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
@@ -21,26 +23,28 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersActivity extends BaseActivity {
+public class OrdersFragment extends BaseFragment {
 
     private BookingsAdapter mAdapter;
     private final List<Bookings> bookings = new ArrayList<>();
 
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.orders_fragment, container, false);
 
-        RecyclerView mRecyclerView = findViewById(R.id.ordersRecyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView mRecyclerView = view.findViewById(R.id.ordersRecyclerview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
 
         mAdapter = new BookingsAdapter(bookings);
 
         mRecyclerView.setAdapter(mAdapter);
 
         loadBookings();
+
+        return view;
     }
+
 
     private void loadBookings() {
         FirebaseDatabase.getInstance().getReference()

@@ -48,7 +48,6 @@
         <activity android:name=".MechanicActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name="com.saharsh.chatapp.MessageActivity" />
-        <activity android:name=".fragments.OrdersActivity" />
         <activity android:name=".Activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
