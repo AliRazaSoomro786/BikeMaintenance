@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import com.bike.maintenance.ars.MapsActivity;
 import com.bike.maintenance.ars.R;
 
-public class HomeFragment extends BaseFragment {
+public class CustomerHomeFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
