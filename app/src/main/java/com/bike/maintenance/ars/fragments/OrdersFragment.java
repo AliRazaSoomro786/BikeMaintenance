@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bike.maintenance.ars.Model.Bookings;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
+import com.bike.maintenance.ars.Utils.Helper;
 import com.bike.maintenance.ars.adapters.BookingsAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +50,7 @@ public class OrdersFragment extends BaseFragment {
     private void loadBookings() {
         FirebaseDatabase.getInstance().getReference()
                 .child(AppConstant.BOOKING_REQUESTS)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.getValue() == null) return;
@@ -59,8 +60,15 @@ public class OrdersFragment extends BaseFragment {
                         for (DataSnapshot snap : snapshot.getChildren()) {
                             Bookings item = snap.getValue(Bookings.class);
 
-                            if (item.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                                bookings.add(item);
+                            if (item == null) return;
+
+                            if (Helper.userType.equals(AppConstant.CUSTOMER)) {
+                                if (item.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                    bookings.add(item);
+                            } else {
+                                if (item.getMechanicuid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                    bookings.add(item);
+                            }
 
                         }
 

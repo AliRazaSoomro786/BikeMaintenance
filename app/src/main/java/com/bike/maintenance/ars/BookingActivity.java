@@ -77,7 +77,7 @@ public class BookingActivity extends BaseActivity {
                 hashMap.put("repairdescription", getText(repairDescription));
                 hashMap.put("timestamp", new Date(System.currentTimeMillis()) + "");
                 hashMap.put("mechanicuid", uid);
-                hashMap.put("staus", false);
+                hashMap.put("status", false);
                 hashMap.put("key", key);
                 hashMap.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
 

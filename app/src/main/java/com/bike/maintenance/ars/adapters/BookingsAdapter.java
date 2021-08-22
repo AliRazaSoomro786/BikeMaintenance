@@ -1,11 +1,12 @@
 package com.bike.maintenance.ars.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -13,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bike.maintenance.ars.Model.Bookings;
 import com.bike.maintenance.ars.R;
+import com.bike.maintenance.ars.Utils.AppConstant;
+import com.bike.maintenance.ars.Utils.Helper;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jackandphantom.circularimageview.CircleImage;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -68,70 +73,60 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyView
 
         holder.description.setText(description);
         holder.mDateTime.setText(item.getTimestamp());
-//
-//        if (Global.currentUser.getType().equals("1")) {
-//            holder.actionCancel.setText("Accept");
-//        } else {
-//            holder.actionCancel.setText("Cancel");
-//        }
 
-//        if (holder.mStauts.getText().toString().equals("Accepted")) {
-//            holder.actionCancel.setText("Cancel");
-//        }
+        if (Helper.userType.equals(AppConstant.MECHANIC)) {
+            holder.actionCancel.setText("Accept");
+        } else {
+            holder.actionCancel.setText("Cancel");
+        }
 
-//            holder.actionCancel.setOnClickListener(v -> {
-//                if (holder.actionCancel.getText().toString().equals("Cancel")) {
-//                    if (Global.currentUser.getType().equals("1")) {
-//
-//                        acceptRejectOffers(activity, () -> {
-//                            HashMap<String, Object> hashMap = new HashMap<>();
-//                            hashMap.put("status", "Cancelled");
-//                            FirebaseHelper.updateFirebaseChild(hashMap, Constants.BUYER_REQUESTS + "/" + item.getKey(), null);
-//                        }, "Do you can to cancel request ?");
-//
-//
-//                    } else {
-//                        acceptRejectOffers(activity, () -> {
-//                            FirebaseHelper.delete(Constants.BUYER_REQUESTS + "/" + item.getKey(),
-//                                    new FirebaseHelper.IFirebaseListener() {
-//                                        @Override
-//                                        public void onSuccess() {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onError(String message) {
-//
-//                                        }
-//                                    });
-//                        }, "Do you can to cancel request ?");
-//
-//
-//                    }
-//
-//                } else if (holder.actionCancel.getText().toString().equals("Accept")) {
-//                    acceptRejectOffers(activity, () -> {
-//                        HashMap<String, Object> hashMap = new HashMap<>();
-//                        hashMap.put("status", "Accepted");
-//                        FirebaseHelper.updateFirebaseChild(hashMap, Constants.BUYER_REQUESTS + "/" + item.getKey(), null);
-//                    }, "Do you can to Accept request ?");
-//
-//
-//                }
-//            });
+        if (holder.mStauts.getText().toString().equals("Accepted")) {
+            holder.actionCancel.setText("Cancel");
+        }
 
-//            Glide.with(activity)
-//                    .load(Global.currentUser.getImage())
-//                    .error(R.mipmap.ic_launcher)
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .into(holder.mProfile);
+        holder.actionCancel.setOnClickListener(v -> {
+            if (holder.actionCancel.getText().toString().equals("Cancel")) {
+                if (Helper.userType.equals(AppConstant.MECHANIC)) {
 
-//    } catch(
-//    Exception e)
-//
-//    {
-//        System.out.println("Exception Screen : QariSahbAdapter" + e.toString());
-//    }
+                    acceptRejectOffers(v.getContext(), () -> {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("status", false);
+                        FirebaseDatabase.getInstance().getReference()
+                                .child(AppConstant.BOOKING_REQUESTS)
+                                .child(item.getKey())
+                                .updateChildren(hashMap);
+
+                    }, "Do you can to cancel request ?");
+
+
+                } else {
+                    acceptRejectOffers(v.getContext(), () -> {
+                        FirebaseDatabase.getInstance().getReference()
+                                .child(AppConstant.BOOKING_REQUESTS)
+                                .child(item.getKey()).removeValue();
+                        bookings.remove(position);
+                        notifyDataSetChanged();
+                        Toast.makeText(v.getContext(), "Request Canceled Successfully ...", Toast.LENGTH_SHORT).show();
+                    }, "Do you can to cancel request ?");
+
+
+                }
+
+            } else if (holder.actionCancel.getText().toString().equals("Accept")) {
+                acceptRejectOffers(v.getContext(), () -> {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("status", true);
+                    FirebaseDatabase.getInstance().getReference()
+                            .child(AppConstant.BOOKING_REQUESTS)
+                            .child(item.getKey())
+                            .updateChildren(hashMap);
+                }, "Do you want to Accept request ?");
+
+
+            }
+        });
+
+
     }
 
 
@@ -151,9 +146,8 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyView
 
     }
 
-    private void acceptRejectOffers(Activity activity, DialogListener listener, String msg) {
-        LayoutInflater layoutInflater = activity.getLayoutInflater();
-        final View v = layoutInflater.inflate(R.layout.custom_accept_offer_diaog, null);
+    private void acceptRejectOffers(Context activity, DialogListener listener, String msg) {
+        final View v = LayoutInflater.from(activity).inflate(R.layout.custom_accept_offer_diaog, null);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
         AlertDialog dialog = alertDialog.create();
 

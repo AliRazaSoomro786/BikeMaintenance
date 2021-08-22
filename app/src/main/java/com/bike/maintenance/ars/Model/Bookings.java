@@ -11,6 +11,7 @@ public class Bookings {
     private String powerengine;
     private String repairdescription;
     private String timestamp;
+    private String key;
     private String uid;
     private boolean status;
 
@@ -102,4 +103,11 @@ public class Bookings {
         this.uid = uid;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

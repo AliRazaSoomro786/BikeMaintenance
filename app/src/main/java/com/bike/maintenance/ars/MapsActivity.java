@@ -169,7 +169,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
                                         for (Marker marker : mMechanicsMarkers)
                                             marker.remove();
 
-                                    Bitmap markerBitmap = scaleBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mechanic), 70, 70);
+                                    Bitmap markerBitmap = scaleBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mechanic), 120, 120);
 
                                     for (Mechanic mechanic : mechanics) {
                                         Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mechanic.getLat(), mechanic.getLng())).
