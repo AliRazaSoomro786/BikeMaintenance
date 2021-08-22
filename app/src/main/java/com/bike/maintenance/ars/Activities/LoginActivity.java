@@ -1,17 +1,17 @@
-  package com.bike.maintenance.ars.Activities;
+package com.bike.maintenance.ars.Activities;
 
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bike.maintenance.ars.CustomerActivity;
-import com.bike.maintenance.ars.MechanicActivity;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
 import com.bike.maintenance.ars.Utils.DialogUtils;
+import com.bike.maintenance.ars.Utils.Helper;
+import com.bike.maintenance.ars.fragments.MechanicHomeFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -60,12 +60,12 @@ public class LoginActivity extends BaseActivity {
         getReference(AppConstant.USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null) return;
+                if (snapshot.getValue() == null) return;
+
                 String type = snapshot.child(AppConstant.USER_TYPE).getValue().toString();
-                if (type.equals(AppConstant.CUSTOMER))
+                Helper.userType = type;
+
                     newActivity(CustomerActivity.class);
-                else
-                    newActivity(MechanicActivity.class);
 
                 finish();
             }

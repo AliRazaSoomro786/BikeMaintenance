@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import com.bike.maintenance.ars.Activities.BaseActivity;
 import com.bike.maintenance.ars.Model.Mechanic;
 import com.bike.maintenance.ars.Utils.AppConstant;
+import com.bike.maintenance.ars.Utils.Helper;
 import com.example.easywaylocation.EasyWayLocation;
 import com.example.easywaylocation.Listener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.saharsh.chatapp.MessageActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.bike.maintenance.ars.Utils.Helper.makeCall;
 
@@ -45,6 +49,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
     private final ArrayList<Marker> mMechanicsMarkers = new ArrayList<>();
     private GoogleMap mMap;
     private Marker mMarker;
+
+    private LatLng shopLocation;
 
     private static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
         Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
@@ -102,13 +108,42 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Li
         }
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true); //my code did not have t
-        loadMechanics();
 
-        mMap.setOnMarkerClickListener(marker -> {
-            if (marker.getTag() == null) return false;
-            mechanicDetailsDialog(marker.getTag().toString());
-            return false;
-        });
+        if (Helper.userType.equals(AppConstant.CUSTOMER)) {
+            loadMechanics();
+            mMap.setOnMarkerClickListener(marker -> {
+                if (marker.getTag() == null) return false;
+                mechanicDetailsDialog(marker.getTag().toString());
+                return false;
+            });
+        } else {
+            Button button = findViewById(R.id.addLocation);
+            button.setVisibility(View.VISIBLE);
+
+            button.setOnClickListener(v -> {
+                if (shopLocation == null) {
+                    Toast.makeText(this, "Please long press on your shop to register location", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put(AppConstant.LNG, shopLocation.longitude);
+                hashMap.put(AppConstant.LAT, shopLocation.latitude);
+
+                getReference(AppConstant.USERS).child(getAuth().getCurrentUser().getUid()).updateChildren(hashMap)
+                        .addOnCompleteListener(task ->
+                                Toast.makeText(MapsActivity.this, "Shop locaiton updated successfully...", Toast.LENGTH_SHORT).show());
+
+            });
+
+            mMap.setOnMapLongClickListener(latLng -> {
+                shopLocation = latLng;
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Shop Position"));
+                Toast.makeText(this, "Shop location selected successfully", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+
     }
 
     private void loadMechanics() {

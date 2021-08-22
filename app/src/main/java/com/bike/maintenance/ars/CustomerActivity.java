@@ -13,8 +13,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bike.maintenance.ars.Activities.BaseActivity;
 import com.bike.maintenance.ars.Activities.LoginActivity;
+import com.bike.maintenance.ars.Utils.AppConstant;
+import com.bike.maintenance.ars.Utils.Helper;
 import com.bike.maintenance.ars.Utils.PermissionHelper;
-import com.bike.maintenance.ars.fragments.HomeFragment;
+import com.bike.maintenance.ars.fragments.CustomerHomeFragment;
+import com.bike.maintenance.ars.fragments.MechanicHomeFragment;
 import com.bike.maintenance.ars.fragments.OrdersFragment;
 import com.bike.maintenance.ars.fragments.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +45,10 @@ public class CustomerActivity extends BaseActivity {
 
 
         imgHome.setOnClickListener(v -> {
-            open(imgHome, new HomeFragment(), "Home");
+            if (Helper.userType.equals(AppConstant.CUSTOMER))
+                open(imgHome, new CustomerHomeFragment(), "Home");
+            else open(imgHome, new MechanicHomeFragment(), "Home");
+
         });
 
         imgOrders.setOnClickListener(v -> {
@@ -59,7 +65,12 @@ public class CustomerActivity extends BaseActivity {
 
         if (!permissionHelper.isGranted())
             permissionHelper.request();
-        else showFragment(new HomeFragment(), "Home");
+        else {
+            if (Helper.userType.equals(AppConstant.CUSTOMER))
+                showFragment(new CustomerHomeFragment(), "Home");
+            else showFragment(new MechanicHomeFragment(), "Home");
+
+        }
 
         findViewById(R.id.actionMore).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
@@ -111,6 +122,6 @@ public class CustomerActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (PermissionHelper.PERMISSION_CODE == requestCode && permissionHelper.isGranted())
-            showFragment(new HomeFragment(), "Home");
+            showFragment(new CustomerHomeFragment(), "Home");
     }
 }

@@ -3,23 +3,18 @@ package com.bike.maintenance.ars.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bike.maintenance.ars.CustomerActivity;
-import com.bike.maintenance.ars.MainActivity;
-import com.bike.maintenance.ars.MechanicActivity;
 import com.bike.maintenance.ars.R;
 import com.bike.maintenance.ars.Utils.AppConstant;
-import com.google.firebase.FirebaseApp;
+import com.bike.maintenance.ars.Utils.Helper;
+import com.bike.maintenance.ars.fragments.MechanicHomeFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 public class SplashScreen extends BaseActivity {
     @Override
@@ -47,10 +42,9 @@ public class SplashScreen extends BaseActivity {
 
                 String type = snapshot.child(AppConstant.USER_TYPE).getValue().toString();
 
-                if (type.equals(AppConstant.CUSTOMER))
+                Helper.userType = type;
+
                     newActivity(CustomerActivity.class); // todo customer activity
-                else
-                    newActivity(MechanicActivity.class);
 
                 finish();
             }

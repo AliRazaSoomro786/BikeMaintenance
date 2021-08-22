@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 public class Helper {
+    public static  String userType = "";
 
     public static void sendMessage(String phone, Context context) {
         try {

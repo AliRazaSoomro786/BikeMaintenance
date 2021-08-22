@@ -45,7 +45,7 @@
             android:name=".CustomerActivity"
             android:label="@string/title_activity_customer" />
         <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".MechanicActivity" />
+        <activity android:name=".fragments.MechanicHomeFragment" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name="com.saharsh.chatapp.MessageActivity" />
         <activity android:name=".Activities.SplashScreen">
